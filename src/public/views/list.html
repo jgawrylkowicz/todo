@@ -1,0 +1,98 @@
+<div id="list-info">
+  <div class="row">
+    <h1>{{list.title}}</h1>
+  </div>
+  <div class="row row-title">
+    <p class="info" ng-if="list.description != undefined">{{list.description}}</p>
+    <p class="info" ng-if="list.description == undefined">No description.</p>
+  </div>
+  <div class="row row-info align-items-center justify-content-start">
+    <div class="col-sm-6 info">Created on {{list.date}} </div>
+    <div class="col row-info-options "><a href="#" data-toggle="modal" data-target="#editListModal">  <i class="icon ion-edit"> </i> Edit List </a></div>
+    <div class="col row-info-options "><a class="danger " href="#" ng-click="deleteList(list)">  <i class="icon ion-trash-b"> </i> Delete List </a> </div>
+
+  </div>
+</div>
+
+<div id="todos">
+
+  <div ng-if="list.todos && list.todos.length > 0">
+
+    <div ng-repeat="todo in list.todos">
+      <div class="row todo-item align-items-center justify-content-between" ng-if="todo.done === false">
+        <div class="col-sm-1">
+          <label class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" ng-model="todo.done" ng-change="updateList()">
+              <span class="custom-control-indicator"></span>
+          </label>
+        </div>
+        <div class="col-sm-10">
+          <div class="row todo-item-text">{{todo.text}} </div>
+          <div class="row todo-item-date">{{todo.date}} </div>
+        </div>
+        <div class="col-sm-1 todo-item-options">
+          <a href="#" ng-click="deleteTodo(todo)">  <i class="icon ion-trash-b danger"> </i> </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div ng-if="list.todos.length == 0
+      || ((list.todos && list.todos.length > 0) && unfinishedTasks() == 0 )">
+    <p class="info">This list is empty. </p>
+  </div>
+</div>
+
+
+<form name="form" ng-submit="addTodo(formTodo.text)" novalidate>
+  <div id="todo-form" class="row justify-content-center align-items-center">
+    <div class="col-10">
+
+      <input type="text" name="todo" class="form-control input-lg"
+      placeholder="Add New Task"
+      ng-model="formTodo.text"
+      ng-model-options="{ debounce: 250 }"
+      ng-minlength="3" ng-maxlength="100" required
+      ng-class="{ 'has-error' : form.todo.$error.minlength || form.todo.$error.maxlength}">
+    </div>
+
+    <div class="col-1">
+      <button ng-disabled="form.$invalid" type="submit" class="btn btn-outline-primary btn-add">
+                  <i class="icon ion-plus"> </i> Add
+              </button>
+    </div>
+
+  </div>
+  <div class="row justify-content-center align-items-center">
+
+    <div class="col-11">
+        <p class="form-message danger" ng-show="form.todo.$error.minlength && form.todo.$touched">The task is too short.</p>
+        <p class="form-message danger" ng-show="form.todo.$error.maxlength && form.todo.$touched">The task is too long.</p>
+    </div>
+  </div>
+
+</form>
+
+
+<div id="todos-done">
+  <div ng-repeat="todo in list.todos">
+    <div class="row todo-item todo-item-done align-items-center justify-content-between" ng-if="todo.done == true">
+      <div class="col-sm-1">
+
+        <label class="custom-control custom-checkbox" >
+              <input type="checkbox" class="custom-control-input" ng-model="todo.done" ng-change="updateList()">
+              <span class="custom-control-indicator"></span>
+          </label>
+      </div>
+      <div class="col-sm-10">
+        <div class="row todo-item-text">{{todo.text}} </div>
+        <div class="row todo-item-date">{{todo.date}} </div>
+      </div>
+      <div class="col-sm-1 todo-item-options">
+        <a href="#" ng-click="deleteTodo(todo)">  <i class="icon ion-trash-b danger"> </i> </a>
+      </div>
+    </div>
+  </div>
+
+</div>

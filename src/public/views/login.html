@@ -1,0 +1,125 @@
+<div class="login-container">
+  <div class="wrapper">
+
+    <div ng-if="err" class="alert alert-danger">
+      <h5>Error</h5>
+      {{err}}
+    </div>
+
+    <div ng-if="info" class="alert alert-info">
+      {{info}}
+    </div>
+
+
+    <div class="form-signin">
+
+      <div ng-if="loading == false" class="btn-group " data-toggle="buttons" id="btn-menu">
+        <label class="btn btn-outline-primary active" ng-click="changeForm('login')">
+          <input type="radio" name="options" value="login" id="option1" autocomplete="off" checked> Login
+        </label>
+        <label class="btn btn-outline-primary" ng-click="changeForm('register')">
+          <input type="radio" name="options" value="register" id="option2" autocomplete="off"> Register
+        </label>
+        <label class="btn btn-outline-primary" ng-click="changeForm('offline')">
+          <input type="radio" name="options" id="option3" autocomplete="off"> Offline
+        </label>
+      </div>
+
+      <div ng-switch="action">
+
+        <div ng-switch-when="login">
+
+          <div ng-switch="currentLoginState">
+            <div ng-switch-when="login">
+
+              <form>
+                <input type="text" class="form-control" name="username" placeholder="Username" ng-model="formLogin.username" autofocus="" />
+                <input type="password" class="form-control" name="password" placeholder="Password" ng-model="formLogin.password" />
+                <button class="btn btn-lg btn btn-outline-primary btn-block" ng-click="submitCredentials()">
+                <i class="icon ion-log-in"> </i>
+                Login
+                </button>
+                <br>
+              </form>
+
+            </div>
+            <div class="loading-wrapper" ng-switch-when="loading">
+
+              <div class="row spinner-wrapper justify-content-center">
+                <div class="col-8">
+                  <div class="spinner"></div>
+               </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+        <div ng-switch-when="register">
+
+          <div ng-switch="currentRegisterState">
+            <div ng-switch-when="register">
+
+              <form>
+                <input type="text" class="form-control" name="username" placeholder="Username" ng-model="formRegister.username" autofocus="" />
+                <input type="password" class="form-control" name="password" placeholder="Password" ng-model="formRegister.password" />
+                <input type="text" class="form-control" name="forename" placeholder="Forname" ng-model="formRegister.forename" autofocus="" />
+                <input type="text" class="form-control" name="surname" placeholder="Surname" ng-model="formRegister.surname" />
+                <button class="btn btn-lg btn btn-outline-primary btn-block" ng-click="registerAccount()">
+                <i class="icon ion-person-add"> </i>
+                Register
+                </button>
+                <br>
+                <p class="info">Or <a href="#" ng-click="createOfllineSession()">click here </a> to create an offline session instead.</p>
+              </form>
+
+            </div>
+            <div class="loading-wrapper" ng-switch-when="loading">
+
+              <div class="row spinner-wrapper justify-content-center">
+                <div class="col-8">
+                  <div class="spinner"></div>
+               </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <div ng-switch-when="offline">
+
+          <div ng-switch="currentOfflineLoginState">
+
+            <div ng-switch-when="login">
+
+              <form >
+                <input type="text" class="form-control" name="username" placeholder="Username" ng-model="formOfflineLogin.username" autofocus="" />
+                <input type="password" class="form-control" name="password" placeholder="Password" ng-model="formOfflineLogin.password" />
+                <button class="btn btn-lg btn btn-outline-primary btn-block" ng-click="restoreOfflineSession()">
+                <i class="icon ion-log-in"> </i>
+                Restore
+                </button>
+                <br>
+                <p class="info">Or <a href="#" ng-click="createOfllineSession()">click here </a> to create a new session instead. The data from the previous one will not be restored.</p>
+              </form>
+
+            </div>
+
+            <div class="loading-wrapper" ng-switch-when="loading">
+
+              <div class="row spinner-wrapper justify-content-center">
+                <div class="col-8">
+                  <div class="spinner"></div>
+               </div>
+              </div>
+
+            </div>
+          
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

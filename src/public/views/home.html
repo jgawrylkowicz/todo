@@ -1,0 +1,161 @@
+<div id="wrapper">
+
+  <div id="sidebar-wrapper">
+    <ul class="sidebar-nav">
+
+
+
+
+
+      <li class="sidebar-brand">
+
+        <div class="row row-list justify-content-between">
+          <div class="col-sm-8 col-list-title">
+            <a href="#">{{username}}</a>
+          </div>
+          <div class="col-sm-1 col-list-options">
+            <a href="#" ng-click="logout()">  <i class="icon ion-log-out"> </i> </a>
+          </div>
+
+        </div>
+
+      </li>
+
+      <li class="link" ng-repeat="list in allLists">
+
+        <div class="row row-list justify-content-between">
+          <div class="col-sm-8 col-list-title">
+
+            <a href="#" ng-click="changeToList(list)">{{list.title}}</a>
+          </div>
+          <div class="col-sm-1 col-list-options">
+            <a href="#" ng-click="deleteList(list)">  <i class="icon ion-trash-b"> </i> </a>
+          </div>
+          <!--<div class="col-sm-1 col-list-options">
+            <a href="#">  <i class="icon ion-edit"> </i> </a>
+          </div>
+          --->
+        </div>
+
+      </li>
+      <br>
+      <li class="link">
+        <a href="#" data-toggle="modal" data-target="#createListModal"><i class="icon ion-plus"> </i>Create List</a>
+      </li>
+
+    </ul>
+
+  </div>
+
+  <div id="page-content-wrapper">
+    <div  class="container-fluid">
+
+      <div ng-if="getType() == 'offline'" class="alert alert-info alert-dismissable">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+        <h5>Offline mode</h5>
+        You are now logged in as an offline user. You aren't connected to the service at the moment. It's possible that the servers are unavailable.
+      </div>
+
+      <a href="#menu-toggle" id="menu-toggle"><i class="icon ion-drag"> </i></a>
+
+      <div  class="row justify-content-center ">
+        <div class="list-view col-md-8 col-sm-10">
+          <div ng-if="allLists && allLists.length > 0">
+            <div ui-view="list"></div>
+          </div>
+          <div ng-if="allLists.length == 0">
+            <h1> No lists found</h1>
+            <br>
+            <a href="#" data-toggle="modal" data-target="#createListModal"><i class="icon ion-plus"> </i>Create list</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Create new list modal -->
+<div class="modal fade" id="createListModal" tabindex="-1" role="dialog" aria-labelledby="createListModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createListModalLabel">Create New List</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+      </div>
+      <form name="formCreate" ng-submit="createList()" novalidate>
+        <div class="modal-body">
+          <div class="form-group">
+            <input type="text" id="createTitleInput"
+            class="form-control input-lg" placeholder="Title" autofucus
+            name="title"
+            ng-model="formData.title"
+            ng-model-options="{ debounce: 250 }"
+            ng-minlength="3" ng-maxlength="20" required
+            ng-class="{ 'has-error' : formCreate.title.$error.minlength || formCreate.title.$error.maxlength}">
+            <p class="form-message danger" ng-show="formCreate.title.$error.minlength && formList.title.$touched">The title is too short.</p>
+            <p class="form-message danger" ng-show="formCreate.title.$error.maxlength && formCreate.title.$touched">The title is too long.</p>
+          </div>
+
+          <div class="form-group">
+            <input type="text" class="form-control input-lg" placeholder="Description" ng-model="formData.description">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" ng-click="createList()" ng-disabled="formCreate.$invalid" class="btn btn-primary" data-dismiss="modal">Create</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Edit existing list modal -->
+<div class="modal fade" id="editListModal" tabindex="-1" role="dialog" aria-labelledby="editListModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editListModalLabel">Edit List</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+      </div>
+      <form name="formEdit" ng-submit="editList()">
+        <div class="modal-body">
+
+          <div class="form-group">
+            <input type="text" id="editTitleInput"
+            class="form-control input-lg" placeholder="Title" autofucus
+            name="title"
+            ng-model="list.title"
+            ng-model-options="{ debounce: 250 }"
+            ng-minlength="3" ng-maxlength="20" required
+            ng-class="{ 'has-error' : formEdit.title.$error.minlength || formEdit.title.$error.maxlength}">
+            <p class="form-message danger" ng-show="formEdit.title.$error.minlength && formEdit.title.$touched">The title is too short.</p>
+            <p class="form-message danger" ng-show="formEdit.title.$error.maxlength && formEdit.title.$touched">The title is too long.</p>
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control input-lg" placeholder="Description" ng-model="list.description">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" ng-disabled="formEdit.$invalid" ng-click="editList()" class="btn btn-primary" data-dismiss="modal">Save</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  $("#menu-toggle").click(function(e) {
+    e.preventDefault();
+    $("#wrapper").toggleClass("toggled");
+  });
+
+</script>
