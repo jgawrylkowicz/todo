@@ -1,5 +1,16 @@
 # Todo
 
+As a university assignment, we had to create a simple to-do web application in a group of maximum four students using microservices pattern. This repository contains my microservice that is responsible for the GUI. 
+
+Express and Node are together the core of my back-end and the RESTful API. They handle all incoming requests and pass the data to the front-end of the application. The front-end is a single page application with dynamic views based on the AngularJS
+
+## Features
+
+* Backup: The database created in Mongo is a part of the backup service incase any of the other services are unavailable
+
+* Single Page: The necessary code is retrieved at the first load of the page, which decreases the number of HTTP requests dramatically. 
+
+
 ## Service deployment
 
 The service is deployed through the Express framework and is reachable for other teammates under 10.102.107.5:8080. 
